@@ -9,7 +9,6 @@ import messages from '@/utils/messages'
 export default {
   computed: {
     error () {
-      console.log(this.$store.getters.error)
       return this.$store.getters.error
     }
   },
