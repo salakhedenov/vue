@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Loader v-if="loading" />
-    <div class="app-main-layout" v-else>
+    <!--<Loader v-if="loading" />-->
+    <div class="app-main-layout">
       <Navbar v-on:click="isOpen = !isOpen" />
       <Sidebar v-model="isOpen" />
       <main class="app-content" :class="{ full: !isOpen }">

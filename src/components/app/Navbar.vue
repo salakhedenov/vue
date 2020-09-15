@@ -26,9 +26,9 @@
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
-              <a href="/login" class="black-text" @click.prevent="logout">
+              <router-link to="login" class="black-text" @click.prevent="logout">
                 <i class="material-icons">assignment_return</i>Выйти
-              </a>
+              </router-link>
             </li>
           </ul>
         </li>
