@@ -5,20 +5,20 @@
         <h4>Создать</h4>
       </div>
 
-      <form @click.prevent="submitHandler">
+      <form @submit.prevent="submitHandler">
         <div class="input-field">
           <input
             id="name"
             type="text"
             v-model="title"
-            :class="{invalid: $v.title.$dirty && !$v.title.$required}"
+            :class="{invalid: $v.title.$dirty && !$v.title.required}"
           />
           <label for="name">Название</label>
           <span
-            v-if="$v.title.$dirty && $v.title.$required"
+            v-if="$v.title.$dirty && !$v.title.required"
             class="helper-text invalid"
           >
-          Введите название
+          Введите название категории
           </span>
         </div>
 
@@ -26,10 +26,16 @@
           <input
             id="limit"
             type="number"
-            v-model="limit"
+            v-model.number="limit"
+            :class="{invalid: $v.limit.$dirty && !$v.limit.minValue}"
           />
           <label for="limit">Лимит</label>
-          <span class="helper-text invalid">Минимальная величина</span>
+          <span
+            v-if="$v.limit.$dirty && !$v.limit.minValue"
+            class="helper-text invalid"
+          >
+            Минимальная величина {{$v.limit.$params.minValue.min}}
+          </span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
@@ -52,7 +58,7 @@ export default {
     title: '',
     limit: 100
   }),
-  validators: {
+  validations: {
     title: {
       required
     },
@@ -61,10 +67,31 @@ export default {
     }
   },
   mounted () {
-
+    window.M.updateTextFields()
   },
   methods: {
-    submitHandler () {
+    async submitHandler () {
+      // console.log(this.$v.limit)
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        /* eslint-disable */
+        return
+        /* eslint-enable */
+      }
+
+      try {
+        const categoryData = {
+          title: this.title,
+          limit: this.limit
+        }
+        const category = await this.$store.dispatch('createCategory', categoryData)
+        // console.log(category)
+        this.title = ''
+        this.limit = 100
+        this.$v.$reset()
+        this.$message('Категория была создана')
+        this.$emit('created', category)
+      } catch (e) {}
     }
   }
 }
