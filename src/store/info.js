@@ -19,7 +19,7 @@ export default {
       try {
         const uid = await dispatch('getUid')
         const updateData = {
-          ...getters.info,
+          ...this.getters.info,
           ...toUpdate
         }
         await firebase.database().ref(`/users/${uid}/info`).update(updateData)

@@ -3,7 +3,7 @@ import firebase from 'firebase/app'
 export default {
   actions: {
     async login ({
-      dispatch, commit
+      commit
     },
     {
       email, password
